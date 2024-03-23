@@ -2,12 +2,16 @@ from unittest import TestCase
 from funkce import losuj_sportku
 
 
-class TestFunkce(TestCase):
+class TestLosovani(TestCase):
 
-    def test_losuj_sportku(self):
-        pocet_cisel = 6
-        cisla = losuj_sportku(pocet_cisel=pocet_cisel)
-        cisla_unique = set(cisla)
-        actual_len = [len(cisla), len(cisla_unique)]
-        expected = [pocet_cisel, pocet_cisel]
-        self.assertEqual(actual_len, expected)
+    def test_losovani_result_length(self):
+        actual = losuj_sportku()
+        expected = 6
+        self.assertEqual(len(actual), expected)
+
+    def test_losovani_result_unique(self):
+        actual = losuj_sportku()
+        #retype to set -> remove duplicates
+        actual = set(actual)
+        expected = 6
+        self.assertEqual(len(actual), expected)
