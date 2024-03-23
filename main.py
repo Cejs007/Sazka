@@ -1,21 +1,12 @@
-from funkce import vsad_sportku, losuj_sportku
+from funkce import vsad_sportku, dokud_nevyhraju
 
+vsazena_cisla = vsad_sportku()
 
-def dokud_nevyhraju(stastna_cisla):
-    stastna_cisla.sort()
-    los = losuj_sportku()
-    los.sort()
-    iterace = 1
-    while stastna_cisla != los:
-        los = losuj_sportku()
-        los.sort()
-        iterace += 1
-        if iterace % 1000000 == 0:
-            print(iterace, los)
-    return iterace
+pocet_losovani_vyhra = dokud_nevyhraju(vsazena_cisla)
 
+LOSOVANI_TYDEN = 3
+TYDNY_ROK = 52
+SLOUPCE_LOSOVANI = 10
+SLOUPEC_KC = 20
 
-if __name__ == '__main__':
-    stastna_cisla = vsad_sportku()
-    iterace = dokud_nevyhraju(stastna_cisla)
-    print(f"Čekal bych {iterace / 3 / 52 / 10} let a prosázel {iterace * 20} Kč.")
+print(pocet_losovani_vyhra / LOSOVANI_TYDEN / SLOUPCE_LOSOVANI / TYDNY_ROK, pocet_losovani_vyhra * SLOUPEC_KC)

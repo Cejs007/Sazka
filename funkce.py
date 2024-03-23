@@ -1,46 +1,55 @@
-from random import randint
+from random import sample
 
 
-def vsad_sportku(pocet_cisel=6, od=1, do=49):
+def vsad_sportku(start=1, end=49, n=6):
     '''
-    Funkce vsaď Sportku, kdy si uživatel
-    vybere 6 čísel od 1 do 49 bez opakování
+    Funkce vezme od uživatele 6 čísel a zkontroluje, zda jsou ve správném formátu
+    a rozsahu. Vrací 6 unikátních hodnot.
     '''
-
-    cisla = []
-    while len(cisla) < pocet_cisel:
+    # zadefinovat místo kam budu ukládat vybraná čísla
+    moje_stastna_cisla = []
+    # iterace dokud nemám 6 čísel
+    while True:
+        # input - zadání čísla
+        cislo = input(f"Zakřížkuj číslo od {start} do {end}: ")
+        # ošetření nečíselného vstupu
         try:
-            cislo = int(input("Zadej své šťastné číslo: "))
+            cislo = int(cislo)
         except ValueError:
-            print("Nezadal jsi celé číslo!")
+            print(f"{cislo} není číslo.")
             continue
-        if cislo in cisla:
-            print("Zadal jsi číslo, které už mám!")
+        # kontrola 1 -> je číslo z rozsahu 1 - 49?
+        if not start <= cislo <= end:
+            print(f"{cislo} mimo rozsah.")
             continue
-        if do >= cislo >= od:
-            print(f"Zadal jsi {cislo}")
-            cisla.append(cislo)
-        else:
-            print(f"Zadané číslo mimo rozsah {od} - {do}!")
-    return cisla
+        # kontrola 2 -> je to nové číslo (nesmí se opakovat)
+        if cislo in moje_stastna_cisla:
+            print(f"{cislo} už mám.")
+            continue
+        # pokud ok -> přidat číslo, pokud ne pokračovat v iteraci
+        moje_stastna_cisla.append(cislo)
+        # zastavení smyčky po dosažení 6 čísel
+        if len(moje_stastna_cisla) == n:
+            break
+    return moje_stastna_cisla
 
 
-def losuj_sportku(pocet_cisel=6, od=1, do=49):
+def losuj_sportku(start=1, end=49, n=6):
     '''
-    Funkce losování Sportky náhodně vyberte 6 čísel
-    bez opakování z čísel od 1 do 49
+    Returns n random unique numbers from start to end.
     '''
-    cisla = []
-    while len(cisla) < pocet_cisel:
-        cislo = randint(od, do)
-        if cislo not in cisla:
-            cisla.append(cislo)
-    return cisla
+    return sample(range(start, end + 1), n)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    vsazeno = vsad_sportku()
-    print(f"Šťastná čísla: {sorted(vsazeno)}")
-    losovano = losuj_sportku()
-    print(f"Vylosovaná čísla: {sorted(losovano)}")
+def dokud_nevyhraju(vsazena_cisla):
+    pocet_losovani = 0
+    vsazena_cisla.sort()
+    while True:
+        los = losuj_sportku()
+        los.sort()
+        pocet_losovani += 1
+        if pocet_losovani % 1000000 == 0:
+            print(pocet_losovani, vsazena_cisla, los)
+        if los == vsazena_cisla:
+            break
+    return pocet_losovani
